@@ -5,10 +5,9 @@ services:
     image: mysql:8.0-debian
     platform: linux/amd64
     environment:
-      MYSQL_ROOT_PASSWORD: example
-      MYSQL_DATABASE: sakila
+      MYSQL_ROOT_PASSWORD: root
     ports:
       - "3306:3306"
     volumes:
-      - ./_tools/01-sakila-schema.sql:/docker-entrypoint-initdb.d/01-sakila-schema.sql
+      - ./_tools/sakila-schema.sql:/docker-entrypoint-initdb.d/01_sakila-schema.sql
       - ./_tools/mysql/conf.d:/etc/mysql/conf.d

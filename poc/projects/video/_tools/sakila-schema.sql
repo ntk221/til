@@ -145,7 +145,7 @@ CREATE TABLE film (
   rental_rate DECIMAL(4,2) NOT NULL DEFAULT 4.99,
   length SMALLINT UNSIGNED DEFAULT NULL,
   replacement_cost DECIMAL(5,2) NOT NULL DEFAULT 19.99,
-  rating ENUM('G','PG','PG-13','R','NC-17') DEFAULT 'G',
+  rating ENUM('G','PG','PG_13','R','NC_17') DEFAULT 'G',
   special_features SET('Trailers','Commentaries','Deleted Scenes','Behind the Scenes') DEFAULT NULL,
   last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY  (film_id),

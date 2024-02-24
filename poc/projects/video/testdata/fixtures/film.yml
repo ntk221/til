@@ -1,0 +1,39 @@
+- film_id: 1
+  title: "Inception"
+  description: "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a CEO."
+  release_year: "2010"
+  language_id: 1
+  original_language_id: null
+  rental_duration: 48
+  rental_rate: "2.99"
+  length: 148
+  replacement_cost: "30.00"
+  rating: "PG_13"
+  special_features: "Commentaries,Deleted Scenes,Behind the Scenes"
+  last_update: "2023-04-01T00:00:00Z"
+- film_id: 2
+  title: "The Devil Wears Prada"
+  description: "A smart but sensible new graduate lands a job as an assistant to Miranda Priestly, the demanding editor-in-chief of a high fashion magazine."
+  release_year: "2006"
+  language_id: 1
+  original_language_id: null
+  rental_duration: 36
+  rental_rate: "3.99"
+  length: 109
+  replacement_cost: "25.00"
+  rating: "PG_13"
+  special_features: "Trailers,Commentaries"
+  last_update: "2023-04-02T00:00:00Z"
+- film_id: 3
+  title: "The Curious Case of Benjamin Button"
+  description: "Tells the story of Benjamin Button, a man who starts aging backwards with bizarre consequences."
+  release_year: "2008"
+  language_id: 1
+  original_language_id: null
+  rental_duration: 72
+  rental_rate: "2.99"
+  length: 166
+  replacement_cost: "20.00"
+  rating: "PG_13"
+  special_features: "Deleted Scenes,Behind the Scenes"
+  last_update: "2023-04-03T00:00:00Z"

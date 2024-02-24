@@ -23,9 +23,9 @@ import (
 
 // City is an object representing the database table.
 type City struct {
-	CityID     uint16    `boil:"city_id" json:"city_id" toml:"city_id" yaml:"city_id"`
+	CityID     int       `boil:"city_id" json:"city_id" toml:"city_id" yaml:"city_id"`
 	City       string    `boil:"city" json:"city" toml:"city" yaml:"city"`
-	CountryID  uint16    `boil:"country_id" json:"country_id" toml:"country_id" yaml:"country_id"`
+	CountryID  int       `boil:"country_id" json:"country_id" toml:"country_id" yaml:"country_id"`
 	LastUpdate time.Time `boil:"last_update" json:"last_update" toml:"last_update" yaml:"last_update"`
 
 	R *cityR `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -59,14 +59,14 @@ var CityTableColumns = struct {
 // Generated where
 
 var CityWhere = struct {
-	CityID     whereHelperuint16
+	CityID     whereHelperint
 	City       whereHelperstring
-	CountryID  whereHelperuint16
+	CountryID  whereHelperint
 	LastUpdate whereHelpertime_Time
 }{
-	CityID:     whereHelperuint16{field: "`city`.`city_id`"},
+	CityID:     whereHelperint{field: "`city`.`city_id`"},
 	City:       whereHelperstring{field: "`city`.`city`"},
-	CountryID:  whereHelperuint16{field: "`city`.`country_id`"},
+	CountryID:  whereHelperint{field: "`city`.`country_id`"},
 	LastUpdate: whereHelpertime_Time{field: "`city`.`last_update`"},
 }
 
@@ -791,7 +791,7 @@ func Cities(mods ...qm.QueryMod) cityQuery {
 
 // FindCity retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindCity(ctx context.Context, exec boil.ContextExecutor, cityID uint16, selectCols ...string) (*City, error) {
+func FindCity(ctx context.Context, exec boil.ContextExecutor, cityID int, selectCols ...string) (*City, error) {
 	cityObj := &City{}
 
 	sel := "*"
@@ -896,7 +896,7 @@ func (o *City) Insert(ctx context.Context, exec boil.ContextExecutor, columns bo
 		return ErrSyncFail
 	}
 
-	o.CityID = uint16(lastID)
+	o.CityID = int(lastID)
 	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == cityMapping["city_id"] {
 		goto CacheNoHooks
 	}
@@ -1172,7 +1172,7 @@ func (o *City) Upsert(ctx context.Context, exec boil.ContextExecutor, updateColu
 		return ErrSyncFail
 	}
 
-	o.CityID = uint16(lastID)
+	o.CityID = int(lastID)
 	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == cityMapping["city_id"] {
 		goto CacheNoHooks
 	}
@@ -1351,7 +1351,7 @@ func (o *CitySlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) er
 }
 
 // CityExists checks if the City row exists.
-func CityExists(ctx context.Context, exec boil.ContextExecutor, cityID uint16) (bool, error) {
+func CityExists(ctx context.Context, exec boil.ContextExecutor, cityID int) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from `city` where `city_id`=? limit 1)"
 

@@ -24,7 +24,7 @@ import (
 
 // FilmText is an object representing the database table.
 type FilmText struct {
-	FilmID      uint16      `boil:"film_id" json:"film_id" toml:"film_id" yaml:"film_id"`
+	FilmID      int         `boil:"film_id" json:"film_id" toml:"film_id" yaml:"film_id"`
 	Title       string      `boil:"title" json:"title" toml:"title" yaml:"title"`
 	Description null.String `boil:"description" json:"description,omitempty" toml:"description" yaml:"description,omitempty"`
 
@@ -55,11 +55,11 @@ var FilmTextTableColumns = struct {
 // Generated where
 
 var FilmTextWhere = struct {
-	FilmID      whereHelperuint16
+	FilmID      whereHelperint
 	Title       whereHelperstring
 	Description whereHelpernull_String
 }{
-	FilmID:      whereHelperuint16{field: "`film_text`.`film_id`"},
+	FilmID:      whereHelperint{field: "`film_text`.`film_id`"},
 	Title:       whereHelperstring{field: "`film_text`.`title`"},
 	Description: whereHelpernull_String{field: "`film_text`.`description`"},
 }
@@ -406,7 +406,7 @@ func FilmTexts(mods ...qm.QueryMod) filmTextQuery {
 
 // FindFilmText retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindFilmText(ctx context.Context, exec boil.ContextExecutor, filmID uint16, selectCols ...string) (*FilmText, error) {
+func FindFilmText(ctx context.Context, exec boil.ContextExecutor, filmID int, selectCols ...string) (*FilmText, error) {
 	filmTextObj := &FilmText{}
 
 	sel := "*"
@@ -944,7 +944,7 @@ func (o *FilmTextSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor
 }
 
 // FilmTextExists checks if the FilmText row exists.
-func FilmTextExists(ctx context.Context, exec boil.ContextExecutor, filmID uint16) (bool, error) {
+func FilmTextExists(ctx context.Context, exec boil.ContextExecutor, filmID int) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from `film_text` where `film_id`=? limit 1)"
 

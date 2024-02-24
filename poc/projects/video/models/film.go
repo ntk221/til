@@ -25,15 +25,15 @@ import (
 
 // Film is an object representing the database table.
 type Film struct {
-	FilmID             uint16         `boil:"film_id" json:"film_id" toml:"film_id" yaml:"film_id"`
+	FilmID             int            `boil:"film_id" json:"film_id" toml:"film_id" yaml:"film_id"`
 	Title              string         `boil:"title" json:"title" toml:"title" yaml:"title"`
 	Description        null.String    `boil:"description" json:"description,omitempty" toml:"description" yaml:"description,omitempty"`
 	ReleaseYear        null.String    `boil:"release_year" json:"release_year,omitempty" toml:"release_year" yaml:"release_year,omitempty"`
-	LanguageID         uint8          `boil:"language_id" json:"language_id" toml:"language_id" yaml:"language_id"`
-	OriginalLanguageID null.Uint8     `boil:"original_language_id" json:"original_language_id,omitempty" toml:"original_language_id" yaml:"original_language_id,omitempty"`
-	RentalDuration     uint8          `boil:"rental_duration" json:"rental_duration" toml:"rental_duration" yaml:"rental_duration"`
+	LanguageID         int8           `boil:"language_id" json:"language_id" toml:"language_id" yaml:"language_id"`
+	OriginalLanguageID null.Int8      `boil:"original_language_id" json:"original_language_id,omitempty" toml:"original_language_id" yaml:"original_language_id,omitempty"`
+	RentalDuration     int8           `boil:"rental_duration" json:"rental_duration" toml:"rental_duration" yaml:"rental_duration"`
 	RentalRate         types.Decimal  `boil:"rental_rate" json:"rental_rate" toml:"rental_rate" yaml:"rental_rate"`
-	Length             null.Uint16    `boil:"length" json:"length,omitempty" toml:"length" yaml:"length,omitempty"`
+	Length             null.Int       `boil:"length" json:"length,omitempty" toml:"length" yaml:"length,omitempty"`
 	ReplacementCost    types.Decimal  `boil:"replacement_cost" json:"replacement_cost" toml:"replacement_cost" yaml:"replacement_cost"`
 	Rating             FilmNullRating `boil:"rating" json:"rating,omitempty" toml:"rating" yaml:"rating,omitempty"`
 	SpecialFeatures    null.String    `boil:"special_features" json:"special_features,omitempty" toml:"special_features" yaml:"special_features,omitempty"`
@@ -105,34 +105,34 @@ var FilmTableColumns = struct {
 
 // Generated where
 
-type whereHelpernull_Uint8 struct{ field string }
+type whereHelpernull_Int8 struct{ field string }
 
-func (w whereHelpernull_Uint8) EQ(x null.Uint8) qm.QueryMod {
+func (w whereHelpernull_Int8) EQ(x null.Int8) qm.QueryMod {
 	return qmhelper.WhereNullEQ(w.field, false, x)
 }
-func (w whereHelpernull_Uint8) NEQ(x null.Uint8) qm.QueryMod {
+func (w whereHelpernull_Int8) NEQ(x null.Int8) qm.QueryMod {
 	return qmhelper.WhereNullEQ(w.field, true, x)
 }
-func (w whereHelpernull_Uint8) LT(x null.Uint8) qm.QueryMod {
+func (w whereHelpernull_Int8) LT(x null.Int8) qm.QueryMod {
 	return qmhelper.Where(w.field, qmhelper.LT, x)
 }
-func (w whereHelpernull_Uint8) LTE(x null.Uint8) qm.QueryMod {
+func (w whereHelpernull_Int8) LTE(x null.Int8) qm.QueryMod {
 	return qmhelper.Where(w.field, qmhelper.LTE, x)
 }
-func (w whereHelpernull_Uint8) GT(x null.Uint8) qm.QueryMod {
+func (w whereHelpernull_Int8) GT(x null.Int8) qm.QueryMod {
 	return qmhelper.Where(w.field, qmhelper.GT, x)
 }
-func (w whereHelpernull_Uint8) GTE(x null.Uint8) qm.QueryMod {
+func (w whereHelpernull_Int8) GTE(x null.Int8) qm.QueryMod {
 	return qmhelper.Where(w.field, qmhelper.GTE, x)
 }
-func (w whereHelpernull_Uint8) IN(slice []uint8) qm.QueryMod {
+func (w whereHelpernull_Int8) IN(slice []int8) qm.QueryMod {
 	values := make([]interface{}, 0, len(slice))
 	for _, value := range slice {
 		values = append(values, value)
 	}
 	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
 }
-func (w whereHelpernull_Uint8) NIN(slice []uint8) qm.QueryMod {
+func (w whereHelpernull_Int8) NIN(slice []int8) qm.QueryMod {
 	values := make([]interface{}, 0, len(slice))
 	for _, value := range slice {
 		values = append(values, value)
@@ -140,8 +140,8 @@ func (w whereHelpernull_Uint8) NIN(slice []uint8) qm.QueryMod {
 	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
 }
 
-func (w whereHelpernull_Uint8) IsNull() qm.QueryMod    { return qmhelper.WhereIsNull(w.field) }
-func (w whereHelpernull_Uint8) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
+func (w whereHelpernull_Int8) IsNull() qm.QueryMod    { return qmhelper.WhereIsNull(w.field) }
+func (w whereHelpernull_Int8) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
 
 type whereHelpertypes_Decimal struct{ field string }
 
@@ -164,34 +164,34 @@ func (w whereHelpertypes_Decimal) GTE(x types.Decimal) qm.QueryMod {
 	return qmhelper.Where(w.field, qmhelper.GTE, x)
 }
 
-type whereHelpernull_Uint16 struct{ field string }
+type whereHelpernull_Int struct{ field string }
 
-func (w whereHelpernull_Uint16) EQ(x null.Uint16) qm.QueryMod {
+func (w whereHelpernull_Int) EQ(x null.Int) qm.QueryMod {
 	return qmhelper.WhereNullEQ(w.field, false, x)
 }
-func (w whereHelpernull_Uint16) NEQ(x null.Uint16) qm.QueryMod {
+func (w whereHelpernull_Int) NEQ(x null.Int) qm.QueryMod {
 	return qmhelper.WhereNullEQ(w.field, true, x)
 }
-func (w whereHelpernull_Uint16) LT(x null.Uint16) qm.QueryMod {
+func (w whereHelpernull_Int) LT(x null.Int) qm.QueryMod {
 	return qmhelper.Where(w.field, qmhelper.LT, x)
 }
-func (w whereHelpernull_Uint16) LTE(x null.Uint16) qm.QueryMod {
+func (w whereHelpernull_Int) LTE(x null.Int) qm.QueryMod {
 	return qmhelper.Where(w.field, qmhelper.LTE, x)
 }
-func (w whereHelpernull_Uint16) GT(x null.Uint16) qm.QueryMod {
+func (w whereHelpernull_Int) GT(x null.Int) qm.QueryMod {
 	return qmhelper.Where(w.field, qmhelper.GT, x)
 }
-func (w whereHelpernull_Uint16) GTE(x null.Uint16) qm.QueryMod {
+func (w whereHelpernull_Int) GTE(x null.Int) qm.QueryMod {
 	return qmhelper.Where(w.field, qmhelper.GTE, x)
 }
-func (w whereHelpernull_Uint16) IN(slice []uint16) qm.QueryMod {
+func (w whereHelpernull_Int) IN(slice []int) qm.QueryMod {
 	values := make([]interface{}, 0, len(slice))
 	for _, value := range slice {
 		values = append(values, value)
 	}
 	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
 }
-func (w whereHelpernull_Uint16) NIN(slice []uint16) qm.QueryMod {
+func (w whereHelpernull_Int) NIN(slice []int) qm.QueryMod {
 	values := make([]interface{}, 0, len(slice))
 	for _, value := range slice {
 		values = append(values, value)
@@ -199,8 +199,8 @@ func (w whereHelpernull_Uint16) NIN(slice []uint16) qm.QueryMod {
 	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
 }
 
-func (w whereHelpernull_Uint16) IsNull() qm.QueryMod    { return qmhelper.WhereIsNull(w.field) }
-func (w whereHelpernull_Uint16) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
+func (w whereHelpernull_Int) IsNull() qm.QueryMod    { return qmhelper.WhereIsNull(w.field) }
+func (w whereHelpernull_Int) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
 
 type whereHelperFilmNullRating struct{ field string }
 
@@ -241,29 +241,29 @@ func (w whereHelperFilmNullRating) IsNull() qm.QueryMod    { return qmhelper.Whe
 func (w whereHelperFilmNullRating) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
 
 var FilmWhere = struct {
-	FilmID             whereHelperuint16
+	FilmID             whereHelperint
 	Title              whereHelperstring
 	Description        whereHelpernull_String
 	ReleaseYear        whereHelpernull_String
-	LanguageID         whereHelperuint8
-	OriginalLanguageID whereHelpernull_Uint8
-	RentalDuration     whereHelperuint8
+	LanguageID         whereHelperint8
+	OriginalLanguageID whereHelpernull_Int8
+	RentalDuration     whereHelperint8
 	RentalRate         whereHelpertypes_Decimal
-	Length             whereHelpernull_Uint16
+	Length             whereHelpernull_Int
 	ReplacementCost    whereHelpertypes_Decimal
 	Rating             whereHelperFilmNullRating
 	SpecialFeatures    whereHelpernull_String
 	LastUpdate         whereHelpertime_Time
 }{
-	FilmID:             whereHelperuint16{field: "`film`.`film_id`"},
+	FilmID:             whereHelperint{field: "`film`.`film_id`"},
 	Title:              whereHelperstring{field: "`film`.`title`"},
 	Description:        whereHelpernull_String{field: "`film`.`description`"},
 	ReleaseYear:        whereHelpernull_String{field: "`film`.`release_year`"},
-	LanguageID:         whereHelperuint8{field: "`film`.`language_id`"},
-	OriginalLanguageID: whereHelpernull_Uint8{field: "`film`.`original_language_id`"},
-	RentalDuration:     whereHelperuint8{field: "`film`.`rental_duration`"},
+	LanguageID:         whereHelperint8{field: "`film`.`language_id`"},
+	OriginalLanguageID: whereHelpernull_Int8{field: "`film`.`original_language_id`"},
+	RentalDuration:     whereHelperint8{field: "`film`.`rental_duration`"},
 	RentalRate:         whereHelpertypes_Decimal{field: "`film`.`rental_rate`"},
-	Length:             whereHelpernull_Uint16{field: "`film`.`length`"},
+	Length:             whereHelpernull_Int{field: "`film`.`length`"},
 	ReplacementCost:    whereHelpertypes_Decimal{field: "`film`.`replacement_cost`"},
 	Rating:             whereHelperFilmNullRating{field: "`film`.`rating`"},
 	SpecialFeatures:    whereHelpernull_String{field: "`film`.`special_features`"},
@@ -1596,7 +1596,7 @@ func Films(mods ...qm.QueryMod) filmQuery {
 
 // FindFilm retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindFilm(ctx context.Context, exec boil.ContextExecutor, filmID uint16, selectCols ...string) (*Film, error) {
+func FindFilm(ctx context.Context, exec boil.ContextExecutor, filmID int, selectCols ...string) (*Film, error) {
 	filmObj := &Film{}
 
 	sel := "*"
@@ -1701,7 +1701,7 @@ func (o *Film) Insert(ctx context.Context, exec boil.ContextExecutor, columns bo
 		return ErrSyncFail
 	}
 
-	o.FilmID = uint16(lastID)
+	o.FilmID = int(lastID)
 	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == filmMapping["film_id"] {
 		goto CacheNoHooks
 	}
@@ -1977,7 +1977,7 @@ func (o *Film) Upsert(ctx context.Context, exec boil.ContextExecutor, updateColu
 		return ErrSyncFail
 	}
 
-	o.FilmID = uint16(lastID)
+	o.FilmID = int(lastID)
 	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == filmMapping["film_id"] {
 		goto CacheNoHooks
 	}
@@ -2156,7 +2156,7 @@ func (o *FilmSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) er
 }
 
 // FilmExists checks if the Film row exists.
-func FilmExists(ctx context.Context, exec boil.ContextExecutor, filmID uint16) (bool, error) {
+func FilmExists(ctx context.Context, exec boil.ContextExecutor, filmID int) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from `film` where `film_id`=? limit 1)"
 

@@ -23,8 +23,8 @@ import (
 
 // FilmActor is an object representing the database table.
 type FilmActor struct {
-	ActorID    uint16    `boil:"actor_id" json:"actor_id" toml:"actor_id" yaml:"actor_id"`
-	FilmID     uint16    `boil:"film_id" json:"film_id" toml:"film_id" yaml:"film_id"`
+	ActorID    int       `boil:"actor_id" json:"actor_id" toml:"actor_id" yaml:"actor_id"`
+	FilmID     int       `boil:"film_id" json:"film_id" toml:"film_id" yaml:"film_id"`
 	LastUpdate time.Time `boil:"last_update" json:"last_update" toml:"last_update" yaml:"last_update"`
 
 	R *filmActorR `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -54,12 +54,12 @@ var FilmActorTableColumns = struct {
 // Generated where
 
 var FilmActorWhere = struct {
-	ActorID    whereHelperuint16
-	FilmID     whereHelperuint16
+	ActorID    whereHelperint
+	FilmID     whereHelperint
 	LastUpdate whereHelpertime_Time
 }{
-	ActorID:    whereHelperuint16{field: "`film_actor`.`actor_id`"},
-	FilmID:     whereHelperuint16{field: "`film_actor`.`film_id`"},
+	ActorID:    whereHelperint{field: "`film_actor`.`actor_id`"},
+	FilmID:     whereHelperint{field: "`film_actor`.`film_id`"},
 	LastUpdate: whereHelpertime_Time{field: "`film_actor`.`last_update`"},
 }
 
@@ -782,7 +782,7 @@ func FilmActors(mods ...qm.QueryMod) filmActorQuery {
 
 // FindFilmActor retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindFilmActor(ctx context.Context, exec boil.ContextExecutor, actorID uint16, filmID uint16, selectCols ...string) (*FilmActor, error) {
+func FindFilmActor(ctx context.Context, exec boil.ContextExecutor, actorID int, filmID int, selectCols ...string) (*FilmActor, error) {
 	filmActorObj := &FilmActor{}
 
 	sel := "*"
@@ -1319,7 +1319,7 @@ func (o *FilmActorSlice) ReloadAll(ctx context.Context, exec boil.ContextExecuto
 }
 
 // FilmActorExists checks if the FilmActor row exists.
-func FilmActorExists(ctx context.Context, exec boil.ContextExecutor, actorID uint16, filmID uint16) (bool, error) {
+func FilmActorExists(ctx context.Context, exec boil.ContextExecutor, actorID int, filmID int) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from `film_actor` where `actor_id`=? AND `film_id`=? limit 1)"
 

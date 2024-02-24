@@ -23,9 +23,9 @@ import (
 
 // Store is an object representing the database table.
 type Store struct {
-	StoreID        uint8     `boil:"store_id" json:"store_id" toml:"store_id" yaml:"store_id"`
-	ManagerStaffID uint8     `boil:"manager_staff_id" json:"manager_staff_id" toml:"manager_staff_id" yaml:"manager_staff_id"`
-	AddressID      uint16    `boil:"address_id" json:"address_id" toml:"address_id" yaml:"address_id"`
+	StoreID        int8      `boil:"store_id" json:"store_id" toml:"store_id" yaml:"store_id"`
+	ManagerStaffID int8      `boil:"manager_staff_id" json:"manager_staff_id" toml:"manager_staff_id" yaml:"manager_staff_id"`
+	AddressID      int       `boil:"address_id" json:"address_id" toml:"address_id" yaml:"address_id"`
 	LastUpdate     time.Time `boil:"last_update" json:"last_update" toml:"last_update" yaml:"last_update"`
 
 	R *storeR `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -59,14 +59,14 @@ var StoreTableColumns = struct {
 // Generated where
 
 var StoreWhere = struct {
-	StoreID        whereHelperuint8
-	ManagerStaffID whereHelperuint8
-	AddressID      whereHelperuint16
+	StoreID        whereHelperint8
+	ManagerStaffID whereHelperint8
+	AddressID      whereHelperint
 	LastUpdate     whereHelpertime_Time
 }{
-	StoreID:        whereHelperuint8{field: "`store`.`store_id`"},
-	ManagerStaffID: whereHelperuint8{field: "`store`.`manager_staff_id`"},
-	AddressID:      whereHelperuint16{field: "`store`.`address_id`"},
+	StoreID:        whereHelperint8{field: "`store`.`store_id`"},
+	ManagerStaffID: whereHelperint8{field: "`store`.`manager_staff_id`"},
+	AddressID:      whereHelperint{field: "`store`.`address_id`"},
 	LastUpdate:     whereHelpertime_Time{field: "`store`.`last_update`"},
 }
 
@@ -1359,7 +1359,7 @@ func Stores(mods ...qm.QueryMod) storeQuery {
 
 // FindStore retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindStore(ctx context.Context, exec boil.ContextExecutor, storeID uint8, selectCols ...string) (*Store, error) {
+func FindStore(ctx context.Context, exec boil.ContextExecutor, storeID int8, selectCols ...string) (*Store, error) {
 	storeObj := &Store{}
 
 	sel := "*"
@@ -1464,7 +1464,7 @@ func (o *Store) Insert(ctx context.Context, exec boil.ContextExecutor, columns b
 		return ErrSyncFail
 	}
 
-	o.StoreID = uint8(lastID)
+	o.StoreID = int8(lastID)
 	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == storeMapping["store_id"] {
 		goto CacheNoHooks
 	}
@@ -1741,7 +1741,7 @@ func (o *Store) Upsert(ctx context.Context, exec boil.ContextExecutor, updateCol
 		return ErrSyncFail
 	}
 
-	o.StoreID = uint8(lastID)
+	o.StoreID = int8(lastID)
 	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == storeMapping["store_id"] {
 		goto CacheNoHooks
 	}
@@ -1920,7 +1920,7 @@ func (o *StoreSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) e
 }
 
 // StoreExists checks if the Store row exists.
-func StoreExists(ctx context.Context, exec boil.ContextExecutor, storeID uint8) (bool, error) {
+func StoreExists(ctx context.Context, exec boil.ContextExecutor, storeID int8) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from `store` where `store_id`=? limit 1)"
 

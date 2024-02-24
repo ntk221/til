@@ -23,7 +23,7 @@ import (
 
 // Actor is an object representing the database table.
 type Actor struct {
-	ActorID    uint16    `boil:"actor_id" json:"actor_id" toml:"actor_id" yaml:"actor_id"`
+	ActorID    int       `boil:"actor_id" json:"actor_id" toml:"actor_id" yaml:"actor_id"`
 	FirstName  string    `boil:"first_name" json:"first_name" toml:"first_name" yaml:"first_name"`
 	LastName   string    `boil:"last_name" json:"last_name" toml:"last_name" yaml:"last_name"`
 	LastUpdate time.Time `boil:"last_update" json:"last_update" toml:"last_update" yaml:"last_update"`
@@ -58,22 +58,22 @@ var ActorTableColumns = struct {
 
 // Generated where
 
-type whereHelperuint16 struct{ field string }
+type whereHelperint struct{ field string }
 
-func (w whereHelperuint16) EQ(x uint16) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
-func (w whereHelperuint16) NEQ(x uint16) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
-func (w whereHelperuint16) LT(x uint16) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
-func (w whereHelperuint16) LTE(x uint16) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
-func (w whereHelperuint16) GT(x uint16) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
-func (w whereHelperuint16) GTE(x uint16) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
-func (w whereHelperuint16) IN(slice []uint16) qm.QueryMod {
+func (w whereHelperint) EQ(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
+func (w whereHelperint) NEQ(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
+func (w whereHelperint) LT(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
+func (w whereHelperint) LTE(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
+func (w whereHelperint) GT(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
+func (w whereHelperint) GTE(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
+func (w whereHelperint) IN(slice []int) qm.QueryMod {
 	values := make([]interface{}, 0, len(slice))
 	for _, value := range slice {
 		values = append(values, value)
 	}
 	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
 }
-func (w whereHelperuint16) NIN(slice []uint16) qm.QueryMod {
+func (w whereHelperint) NIN(slice []int) qm.QueryMod {
 	values := make([]interface{}, 0, len(slice))
 	for _, value := range slice {
 		values = append(values, value)
@@ -128,12 +128,12 @@ func (w whereHelpertime_Time) GTE(x time.Time) qm.QueryMod {
 }
 
 var ActorWhere = struct {
-	ActorID    whereHelperuint16
+	ActorID    whereHelperint
 	FirstName  whereHelperstring
 	LastName   whereHelperstring
 	LastUpdate whereHelpertime_Time
 }{
-	ActorID:    whereHelperuint16{field: "`actor`.`actor_id`"},
+	ActorID:    whereHelperint{field: "`actor`.`actor_id`"},
 	FirstName:  whereHelperstring{field: "`actor`.`first_name`"},
 	LastName:   whereHelperstring{field: "`actor`.`last_name`"},
 	LastUpdate: whereHelpertime_Time{field: "`actor`.`last_update`"},
@@ -672,7 +672,7 @@ func Actors(mods ...qm.QueryMod) actorQuery {
 
 // FindActor retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindActor(ctx context.Context, exec boil.ContextExecutor, actorID uint16, selectCols ...string) (*Actor, error) {
+func FindActor(ctx context.Context, exec boil.ContextExecutor, actorID int, selectCols ...string) (*Actor, error) {
 	actorObj := &Actor{}
 
 	sel := "*"
@@ -777,7 +777,7 @@ func (o *Actor) Insert(ctx context.Context, exec boil.ContextExecutor, columns b
 		return ErrSyncFail
 	}
 
-	o.ActorID = uint16(lastID)
+	o.ActorID = int(lastID)
 	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == actorMapping["actor_id"] {
 		goto CacheNoHooks
 	}
@@ -1053,7 +1053,7 @@ func (o *Actor) Upsert(ctx context.Context, exec boil.ContextExecutor, updateCol
 		return ErrSyncFail
 	}
 
-	o.ActorID = uint16(lastID)
+	o.ActorID = int(lastID)
 	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == actorMapping["actor_id"] {
 		goto CacheNoHooks
 	}
@@ -1232,7 +1232,7 @@ func (o *ActorSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) e
 }
 
 // ActorExists checks if the Actor row exists.
-func ActorExists(ctx context.Context, exec boil.ContextExecutor, actorID uint16) (bool, error) {
+func ActorExists(ctx context.Context, exec boil.ContextExecutor, actorID int) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from `actor` where `actor_id`=? limit 1)"
 

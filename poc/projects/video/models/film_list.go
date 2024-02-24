@@ -25,12 +25,12 @@ import (
 
 // FilmList is an object representing the database table.
 type FilmList struct {
-	FID         uint16             `boil:"FID" json:"FID" toml:"FID" yaml:"FID"`
+	FID         int                `boil:"FID" json:"FID" toml:"FID" yaml:"FID"`
 	Title       string             `boil:"title" json:"title" toml:"title" yaml:"title"`
 	Description null.String        `boil:"description" json:"description,omitempty" toml:"description" yaml:"description,omitempty"`
 	Category    null.String        `boil:"category" json:"category,omitempty" toml:"category" yaml:"category,omitempty"`
 	Price       types.Decimal      `boil:"price" json:"price" toml:"price" yaml:"price"`
-	Length      null.Uint16        `boil:"length" json:"length,omitempty" toml:"length" yaml:"length,omitempty"`
+	Length      null.Int           `boil:"length" json:"length,omitempty" toml:"length" yaml:"length,omitempty"`
 	Rating      FilmListNullRating `boil:"rating" json:"rating,omitempty" toml:"rating" yaml:"rating,omitempty"`
 	Actors      null.String        `boil:"actors" json:"actors,omitempty" toml:"actors" yaml:"actors,omitempty"`
 }
@@ -118,21 +118,21 @@ func (w whereHelperFilmListNullRating) IsNotNull() qm.QueryMod {
 }
 
 var FilmListWhere = struct {
-	FID         whereHelperuint16
+	FID         whereHelperint
 	Title       whereHelperstring
 	Description whereHelpernull_String
 	Category    whereHelpernull_String
 	Price       whereHelpertypes_Decimal
-	Length      whereHelpernull_Uint16
+	Length      whereHelpernull_Int
 	Rating      whereHelperFilmListNullRating
 	Actors      whereHelpernull_String
 }{
-	FID:         whereHelperuint16{field: "`film_list`.`FID`"},
+	FID:         whereHelperint{field: "`film_list`.`FID`"},
 	Title:       whereHelperstring{field: "`film_list`.`title`"},
 	Description: whereHelpernull_String{field: "`film_list`.`description`"},
 	Category:    whereHelpernull_String{field: "`film_list`.`category`"},
 	Price:       whereHelpertypes_Decimal{field: "`film_list`.`price`"},
-	Length:      whereHelpernull_Uint16{field: "`film_list`.`length`"},
+	Length:      whereHelpernull_Int{field: "`film_list`.`length`"},
 	Rating:      whereHelperFilmListNullRating{field: "`film_list`.`rating`"},
 	Actors:      whereHelpernull_String{field: "`film_list`.`actors`"},
 }

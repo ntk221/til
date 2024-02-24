@@ -24,7 +24,7 @@ import (
 
 // ActorInfo is an object representing the database table.
 type ActorInfo struct {
-	ActorID   uint16      `boil:"actor_id" json:"actor_id" toml:"actor_id" yaml:"actor_id"`
+	ActorID   int         `boil:"actor_id" json:"actor_id" toml:"actor_id" yaml:"actor_id"`
 	FirstName string      `boil:"first_name" json:"first_name" toml:"first_name" yaml:"first_name"`
 	LastName  string      `boil:"last_name" json:"last_name" toml:"last_name" yaml:"last_name"`
 	FilmInfo  null.String `boil:"film_info" json:"film_info,omitempty" toml:"film_info" yaml:"film_info,omitempty"`
@@ -57,12 +57,12 @@ var ActorInfoTableColumns = struct {
 // Generated where
 
 var ActorInfoWhere = struct {
-	ActorID   whereHelperuint16
+	ActorID   whereHelperint
 	FirstName whereHelperstring
 	LastName  whereHelperstring
 	FilmInfo  whereHelpernull_String
 }{
-	ActorID:   whereHelperuint16{field: "`actor_info`.`actor_id`"},
+	ActorID:   whereHelperint{field: "`actor_info`.`actor_id`"},
 	FirstName: whereHelperstring{field: "`actor_info`.`first_name`"},
 	LastName:  whereHelperstring{field: "`actor_info`.`last_name`"},
 	FilmInfo:  whereHelpernull_String{field: "`actor_info`.`film_info`"},

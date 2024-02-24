@@ -24,14 +24,14 @@ import (
 
 // StaffList is an object representing the database table.
 type StaffList struct {
-	ID      uint8       `boil:"ID" json:"ID" toml:"ID" yaml:"ID"`
+	ID      int8        `boil:"ID" json:"ID" toml:"ID" yaml:"ID"`
 	Name    null.String `boil:"name" json:"name,omitempty" toml:"name" yaml:"name,omitempty"`
 	Address string      `boil:"address" json:"address" toml:"address" yaml:"address"`
 	ZipCode null.String `boil:"zip code" json:"zip code,omitempty" toml:"zip code" yaml:"zip code,omitempty"`
 	Phone   string      `boil:"phone" json:"phone" toml:"phone" yaml:"phone"`
 	City    string      `boil:"city" json:"city" toml:"city" yaml:"city"`
 	Country string      `boil:"country" json:"country" toml:"country" yaml:"country"`
-	SID     uint8       `boil:"SID" json:"SID" toml:"SID" yaml:"SID"`
+	SID     int8        `boil:"SID" json:"SID" toml:"SID" yaml:"SID"`
 }
 
 var StaffListColumns = struct {
@@ -77,23 +77,23 @@ var StaffListTableColumns = struct {
 // Generated where
 
 var StaffListWhere = struct {
-	ID      whereHelperuint8
+	ID      whereHelperint8
 	Name    whereHelpernull_String
 	Address whereHelperstring
 	ZipCode whereHelpernull_String
 	Phone   whereHelperstring
 	City    whereHelperstring
 	Country whereHelperstring
-	SID     whereHelperuint8
+	SID     whereHelperint8
 }{
-	ID:      whereHelperuint8{field: "`staff_list`.`ID`"},
+	ID:      whereHelperint8{field: "`staff_list`.`ID`"},
 	Name:    whereHelpernull_String{field: "`staff_list`.`name`"},
 	Address: whereHelperstring{field: "`staff_list`.`address`"},
 	ZipCode: whereHelpernull_String{field: "`staff_list`.`zip code`"},
 	Phone:   whereHelperstring{field: "`staff_list`.`phone`"},
 	City:    whereHelperstring{field: "`staff_list`.`city`"},
 	Country: whereHelperstring{field: "`staff_list`.`country`"},
-	SID:     whereHelperuint8{field: "`staff_list`.`SID`"},
+	SID:     whereHelperint8{field: "`staff_list`.`SID`"},
 }
 
 var (

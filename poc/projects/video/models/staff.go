@@ -24,13 +24,13 @@ import (
 
 // Staff is an object representing the database table.
 type Staff struct {
-	StaffID    uint8       `boil:"staff_id" json:"staff_id" toml:"staff_id" yaml:"staff_id"`
+	StaffID    int8        `boil:"staff_id" json:"staff_id" toml:"staff_id" yaml:"staff_id"`
 	FirstName  string      `boil:"first_name" json:"first_name" toml:"first_name" yaml:"first_name"`
 	LastName   string      `boil:"last_name" json:"last_name" toml:"last_name" yaml:"last_name"`
-	AddressID  uint16      `boil:"address_id" json:"address_id" toml:"address_id" yaml:"address_id"`
+	AddressID  int         `boil:"address_id" json:"address_id" toml:"address_id" yaml:"address_id"`
 	Picture    null.Bytes  `boil:"picture" json:"picture,omitempty" toml:"picture" yaml:"picture,omitempty"`
 	Email      null.String `boil:"email" json:"email,omitempty" toml:"email" yaml:"email,omitempty"`
-	StoreID    uint8       `boil:"store_id" json:"store_id" toml:"store_id" yaml:"store_id"`
+	StoreID    int8        `boil:"store_id" json:"store_id" toml:"store_id" yaml:"store_id"`
 	Active     int8        `boil:"active" json:"active" toml:"active" yaml:"active"`
 	Username   string      `boil:"username" json:"username" toml:"username" yaml:"username"`
 	Password   null.String `boil:"password" json:"password,omitempty" toml:"password" yaml:"password,omitempty"`
@@ -119,25 +119,25 @@ func (w whereHelpernull_Bytes) IsNull() qm.QueryMod    { return qmhelper.WhereIs
 func (w whereHelpernull_Bytes) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
 
 var StaffWhere = struct {
-	StaffID    whereHelperuint8
+	StaffID    whereHelperint8
 	FirstName  whereHelperstring
 	LastName   whereHelperstring
-	AddressID  whereHelperuint16
+	AddressID  whereHelperint
 	Picture    whereHelpernull_Bytes
 	Email      whereHelpernull_String
-	StoreID    whereHelperuint8
+	StoreID    whereHelperint8
 	Active     whereHelperint8
 	Username   whereHelperstring
 	Password   whereHelpernull_String
 	LastUpdate whereHelpertime_Time
 }{
-	StaffID:    whereHelperuint8{field: "`staff`.`staff_id`"},
+	StaffID:    whereHelperint8{field: "`staff`.`staff_id`"},
 	FirstName:  whereHelperstring{field: "`staff`.`first_name`"},
 	LastName:   whereHelperstring{field: "`staff`.`last_name`"},
-	AddressID:  whereHelperuint16{field: "`staff`.`address_id`"},
+	AddressID:  whereHelperint{field: "`staff`.`address_id`"},
 	Picture:    whereHelpernull_Bytes{field: "`staff`.`picture`"},
 	Email:      whereHelpernull_String{field: "`staff`.`email`"},
-	StoreID:    whereHelperuint8{field: "`staff`.`store_id`"},
+	StoreID:    whereHelperint8{field: "`staff`.`store_id`"},
 	Active:     whereHelperint8{field: "`staff`.`active`"},
 	Username:   whereHelperstring{field: "`staff`.`username`"},
 	Password:   whereHelpernull_String{field: "`staff`.`password`"},
@@ -1431,7 +1431,7 @@ func Staffs(mods ...qm.QueryMod) staffQuery {
 
 // FindStaff retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindStaff(ctx context.Context, exec boil.ContextExecutor, staffID uint8, selectCols ...string) (*Staff, error) {
+func FindStaff(ctx context.Context, exec boil.ContextExecutor, staffID int8, selectCols ...string) (*Staff, error) {
 	staffObj := &Staff{}
 
 	sel := "*"
@@ -1536,7 +1536,7 @@ func (o *Staff) Insert(ctx context.Context, exec boil.ContextExecutor, columns b
 		return ErrSyncFail
 	}
 
-	o.StaffID = uint8(lastID)
+	o.StaffID = int8(lastID)
 	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == staffMapping["staff_id"] {
 		goto CacheNoHooks
 	}
@@ -1812,7 +1812,7 @@ func (o *Staff) Upsert(ctx context.Context, exec boil.ContextExecutor, updateCol
 		return ErrSyncFail
 	}
 
-	o.StaffID = uint8(lastID)
+	o.StaffID = int8(lastID)
 	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == staffMapping["staff_id"] {
 		goto CacheNoHooks
 	}
@@ -1991,7 +1991,7 @@ func (o *StaffSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) e
 }
 
 // StaffExists checks if the Staff row exists.
-func StaffExists(ctx context.Context, exec boil.ContextExecutor, staffID uint8) (bool, error) {
+func StaffExists(ctx context.Context, exec boil.ContextExecutor, staffID int8) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from `staff` where `staff_id`=? limit 1)"
 

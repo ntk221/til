@@ -23,7 +23,7 @@ import (
 
 // Country is an object representing the database table.
 type Country struct {
-	CountryID  uint16    `boil:"country_id" json:"country_id" toml:"country_id" yaml:"country_id"`
+	CountryID  int       `boil:"country_id" json:"country_id" toml:"country_id" yaml:"country_id"`
 	Country    string    `boil:"country" json:"country" toml:"country" yaml:"country"`
 	LastUpdate time.Time `boil:"last_update" json:"last_update" toml:"last_update" yaml:"last_update"`
 
@@ -54,11 +54,11 @@ var CountryTableColumns = struct {
 // Generated where
 
 var CountryWhere = struct {
-	CountryID  whereHelperuint16
+	CountryID  whereHelperint
 	Country    whereHelperstring
 	LastUpdate whereHelpertime_Time
 }{
-	CountryID:  whereHelperuint16{field: "`country`.`country_id`"},
+	CountryID:  whereHelperint{field: "`country`.`country_id`"},
 	Country:    whereHelperstring{field: "`country`.`country`"},
 	LastUpdate: whereHelpertime_Time{field: "`country`.`last_update`"},
 }
@@ -596,7 +596,7 @@ func Countries(mods ...qm.QueryMod) countryQuery {
 
 // FindCountry retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindCountry(ctx context.Context, exec boil.ContextExecutor, countryID uint16, selectCols ...string) (*Country, error) {
+func FindCountry(ctx context.Context, exec boil.ContextExecutor, countryID int, selectCols ...string) (*Country, error) {
 	countryObj := &Country{}
 
 	sel := "*"
@@ -701,7 +701,7 @@ func (o *Country) Insert(ctx context.Context, exec boil.ContextExecutor, columns
 		return ErrSyncFail
 	}
 
-	o.CountryID = uint16(lastID)
+	o.CountryID = int(lastID)
 	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == countryMapping["country_id"] {
 		goto CacheNoHooks
 	}
@@ -977,7 +977,7 @@ func (o *Country) Upsert(ctx context.Context, exec boil.ContextExecutor, updateC
 		return ErrSyncFail
 	}
 
-	o.CountryID = uint16(lastID)
+	o.CountryID = int(lastID)
 	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == countryMapping["country_id"] {
 		goto CacheNoHooks
 	}
@@ -1156,7 +1156,7 @@ func (o *CountrySlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor)
 }
 
 // CountryExists checks if the Country row exists.
-func CountryExists(ctx context.Context, exec boil.ContextExecutor, countryID uint16) (bool, error) {
+func CountryExists(ctx context.Context, exec boil.ContextExecutor, countryID int) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from `country` where `country_id`=? limit 1)"
 

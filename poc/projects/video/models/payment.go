@@ -25,9 +25,9 @@ import (
 
 // Payment is an object representing the database table.
 type Payment struct {
-	PaymentID   uint16        `boil:"payment_id" json:"payment_id" toml:"payment_id" yaml:"payment_id"`
-	CustomerID  uint16        `boil:"customer_id" json:"customer_id" toml:"customer_id" yaml:"customer_id"`
-	StaffID     uint8         `boil:"staff_id" json:"staff_id" toml:"staff_id" yaml:"staff_id"`
+	PaymentID   int           `boil:"payment_id" json:"payment_id" toml:"payment_id" yaml:"payment_id"`
+	CustomerID  int           `boil:"customer_id" json:"customer_id" toml:"customer_id" yaml:"customer_id"`
+	StaffID     int8          `boil:"staff_id" json:"staff_id" toml:"staff_id" yaml:"staff_id"`
 	RentalID    null.Int      `boil:"rental_id" json:"rental_id,omitempty" toml:"rental_id" yaml:"rental_id,omitempty"`
 	Amount      types.Decimal `boil:"amount" json:"amount" toml:"amount" yaml:"amount"`
 	PaymentDate time.Time     `boil:"payment_date" json:"payment_date" toml:"payment_date" yaml:"payment_date"`
@@ -75,56 +75,18 @@ var PaymentTableColumns = struct {
 
 // Generated where
 
-type whereHelpernull_Int struct{ field string }
-
-func (w whereHelpernull_Int) EQ(x null.Int) qm.QueryMod {
-	return qmhelper.WhereNullEQ(w.field, false, x)
-}
-func (w whereHelpernull_Int) NEQ(x null.Int) qm.QueryMod {
-	return qmhelper.WhereNullEQ(w.field, true, x)
-}
-func (w whereHelpernull_Int) LT(x null.Int) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.LT, x)
-}
-func (w whereHelpernull_Int) LTE(x null.Int) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.LTE, x)
-}
-func (w whereHelpernull_Int) GT(x null.Int) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.GT, x)
-}
-func (w whereHelpernull_Int) GTE(x null.Int) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.GTE, x)
-}
-func (w whereHelpernull_Int) IN(slice []int) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
-}
-func (w whereHelpernull_Int) NIN(slice []int) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
-}
-
-func (w whereHelpernull_Int) IsNull() qm.QueryMod    { return qmhelper.WhereIsNull(w.field) }
-func (w whereHelpernull_Int) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
-
 var PaymentWhere = struct {
-	PaymentID   whereHelperuint16
-	CustomerID  whereHelperuint16
-	StaffID     whereHelperuint8
+	PaymentID   whereHelperint
+	CustomerID  whereHelperint
+	StaffID     whereHelperint8
 	RentalID    whereHelpernull_Int
 	Amount      whereHelpertypes_Decimal
 	PaymentDate whereHelpertime_Time
 	LastUpdate  whereHelpernull_Time
 }{
-	PaymentID:   whereHelperuint16{field: "`payment`.`payment_id`"},
-	CustomerID:  whereHelperuint16{field: "`payment`.`customer_id`"},
-	StaffID:     whereHelperuint8{field: "`payment`.`staff_id`"},
+	PaymentID:   whereHelperint{field: "`payment`.`payment_id`"},
+	CustomerID:  whereHelperint{field: "`payment`.`customer_id`"},
+	StaffID:     whereHelperint8{field: "`payment`.`staff_id`"},
 	RentalID:    whereHelpernull_Int{field: "`payment`.`rental_id`"},
 	Amount:      whereHelpertypes_Decimal{field: "`payment`.`amount`"},
 	PaymentDate: whereHelpertime_Time{field: "`payment`.`payment_date`"},
@@ -1075,7 +1037,7 @@ func Payments(mods ...qm.QueryMod) paymentQuery {
 
 // FindPayment retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindPayment(ctx context.Context, exec boil.ContextExecutor, paymentID uint16, selectCols ...string) (*Payment, error) {
+func FindPayment(ctx context.Context, exec boil.ContextExecutor, paymentID int, selectCols ...string) (*Payment, error) {
 	paymentObj := &Payment{}
 
 	sel := "*"
@@ -1180,7 +1142,7 @@ func (o *Payment) Insert(ctx context.Context, exec boil.ContextExecutor, columns
 		return ErrSyncFail
 	}
 
-	o.PaymentID = uint16(lastID)
+	o.PaymentID = int(lastID)
 	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == paymentMapping["payment_id"] {
 		goto CacheNoHooks
 	}
@@ -1456,7 +1418,7 @@ func (o *Payment) Upsert(ctx context.Context, exec boil.ContextExecutor, updateC
 		return ErrSyncFail
 	}
 
-	o.PaymentID = uint16(lastID)
+	o.PaymentID = int(lastID)
 	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == paymentMapping["payment_id"] {
 		goto CacheNoHooks
 	}
@@ -1635,7 +1597,7 @@ func (o *PaymentSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor)
 }
 
 // PaymentExists checks if the Payment row exists.
-func PaymentExists(ctx context.Context, exec boil.ContextExecutor, paymentID uint16) (bool, error) {
+func PaymentExists(ctx context.Context, exec boil.ContextExecutor, paymentID int) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from `payment` where `payment_id`=? limit 1)"
 

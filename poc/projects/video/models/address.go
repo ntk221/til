@@ -24,11 +24,11 @@ import (
 
 // Address is an object representing the database table.
 type Address struct {
-	AddressID  uint16      `boil:"address_id" json:"address_id" toml:"address_id" yaml:"address_id"`
+	AddressID  int         `boil:"address_id" json:"address_id" toml:"address_id" yaml:"address_id"`
 	Address    string      `boil:"address" json:"address" toml:"address" yaml:"address"`
 	Address2   null.String `boil:"address2" json:"address2,omitempty" toml:"address2" yaml:"address2,omitempty"`
 	District   string      `boil:"district" json:"district" toml:"district" yaml:"district"`
-	CityID     uint16      `boil:"city_id" json:"city_id" toml:"city_id" yaml:"city_id"`
+	CityID     int         `boil:"city_id" json:"city_id" toml:"city_id" yaml:"city_id"`
 	PostalCode null.String `boil:"postal_code" json:"postal_code,omitempty" toml:"postal_code" yaml:"postal_code,omitempty"`
 	Phone      string      `boil:"phone" json:"phone" toml:"phone" yaml:"phone"`
 	Location   string      `boil:"location" json:"location" toml:"location" yaml:"location"`
@@ -129,21 +129,21 @@ func (w whereHelpernull_String) IsNull() qm.QueryMod    { return qmhelper.WhereI
 func (w whereHelpernull_String) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
 
 var AddressWhere = struct {
-	AddressID  whereHelperuint16
+	AddressID  whereHelperint
 	Address    whereHelperstring
 	Address2   whereHelpernull_String
 	District   whereHelperstring
-	CityID     whereHelperuint16
+	CityID     whereHelperint
 	PostalCode whereHelpernull_String
 	Phone      whereHelperstring
 	Location   whereHelperstring
 	LastUpdate whereHelpertime_Time
 }{
-	AddressID:  whereHelperuint16{field: "`address`.`address_id`"},
+	AddressID:  whereHelperint{field: "`address`.`address_id`"},
 	Address:    whereHelperstring{field: "`address`.`address`"},
 	Address2:   whereHelpernull_String{field: "`address`.`address2`"},
 	District:   whereHelperstring{field: "`address`.`district`"},
-	CityID:     whereHelperuint16{field: "`address`.`city_id`"},
+	CityID:     whereHelperint{field: "`address`.`city_id`"},
 	PostalCode: whereHelpernull_String{field: "`address`.`postal_code`"},
 	Phone:      whereHelperstring{field: "`address`.`phone`"},
 	Location:   whereHelperstring{field: "`address`.`location`"},
@@ -1251,7 +1251,7 @@ func Addresses(mods ...qm.QueryMod) addressQuery {
 
 // FindAddress retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindAddress(ctx context.Context, exec boil.ContextExecutor, addressID uint16, selectCols ...string) (*Address, error) {
+func FindAddress(ctx context.Context, exec boil.ContextExecutor, addressID int, selectCols ...string) (*Address, error) {
 	addressObj := &Address{}
 
 	sel := "*"
@@ -1356,7 +1356,7 @@ func (o *Address) Insert(ctx context.Context, exec boil.ContextExecutor, columns
 		return ErrSyncFail
 	}
 
-	o.AddressID = uint16(lastID)
+	o.AddressID = int(lastID)
 	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == addressMapping["address_id"] {
 		goto CacheNoHooks
 	}
@@ -1632,7 +1632,7 @@ func (o *Address) Upsert(ctx context.Context, exec boil.ContextExecutor, updateC
 		return ErrSyncFail
 	}
 
-	o.AddressID = uint16(lastID)
+	o.AddressID = int(lastID)
 	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == addressMapping["address_id"] {
 		goto CacheNoHooks
 	}
@@ -1811,7 +1811,7 @@ func (o *AddressSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor)
 }
 
 // AddressExists checks if the Address row exists.
-func AddressExists(ctx context.Context, exec boil.ContextExecutor, addressID uint16) (bool, error) {
+func AddressExists(ctx context.Context, exec boil.ContextExecutor, addressID int) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from `address` where `address_id`=? limit 1)"
 

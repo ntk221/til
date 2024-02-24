@@ -23,9 +23,9 @@ import (
 
 // Inventory is an object representing the database table.
 type Inventory struct {
-	InventoryID uint32    `boil:"inventory_id" json:"inventory_id" toml:"inventory_id" yaml:"inventory_id"`
-	FilmID      uint16    `boil:"film_id" json:"film_id" toml:"film_id" yaml:"film_id"`
-	StoreID     uint8     `boil:"store_id" json:"store_id" toml:"store_id" yaml:"store_id"`
+	InventoryID int32     `boil:"inventory_id" json:"inventory_id" toml:"inventory_id" yaml:"inventory_id"`
+	FilmID      int       `boil:"film_id" json:"film_id" toml:"film_id" yaml:"film_id"`
+	StoreID     int8      `boil:"store_id" json:"store_id" toml:"store_id" yaml:"store_id"`
 	LastUpdate  time.Time `boil:"last_update" json:"last_update" toml:"last_update" yaml:"last_update"`
 
 	R *inventoryR `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -58,22 +58,22 @@ var InventoryTableColumns = struct {
 
 // Generated where
 
-type whereHelperuint32 struct{ field string }
+type whereHelperint32 struct{ field string }
 
-func (w whereHelperuint32) EQ(x uint32) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
-func (w whereHelperuint32) NEQ(x uint32) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
-func (w whereHelperuint32) LT(x uint32) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
-func (w whereHelperuint32) LTE(x uint32) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
-func (w whereHelperuint32) GT(x uint32) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
-func (w whereHelperuint32) GTE(x uint32) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
-func (w whereHelperuint32) IN(slice []uint32) qm.QueryMod {
+func (w whereHelperint32) EQ(x int32) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
+func (w whereHelperint32) NEQ(x int32) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
+func (w whereHelperint32) LT(x int32) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
+func (w whereHelperint32) LTE(x int32) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
+func (w whereHelperint32) GT(x int32) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
+func (w whereHelperint32) GTE(x int32) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
+func (w whereHelperint32) IN(slice []int32) qm.QueryMod {
 	values := make([]interface{}, 0, len(slice))
 	for _, value := range slice {
 		values = append(values, value)
 	}
 	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
 }
-func (w whereHelperuint32) NIN(slice []uint32) qm.QueryMod {
+func (w whereHelperint32) NIN(slice []int32) qm.QueryMod {
 	values := make([]interface{}, 0, len(slice))
 	for _, value := range slice {
 		values = append(values, value)
@@ -82,14 +82,14 @@ func (w whereHelperuint32) NIN(slice []uint32) qm.QueryMod {
 }
 
 var InventoryWhere = struct {
-	InventoryID whereHelperuint32
-	FilmID      whereHelperuint16
-	StoreID     whereHelperuint8
+	InventoryID whereHelperint32
+	FilmID      whereHelperint
+	StoreID     whereHelperint8
 	LastUpdate  whereHelpertime_Time
 }{
-	InventoryID: whereHelperuint32{field: "`inventory`.`inventory_id`"},
-	FilmID:      whereHelperuint16{field: "`inventory`.`film_id`"},
-	StoreID:     whereHelperuint8{field: "`inventory`.`store_id`"},
+	InventoryID: whereHelperint32{field: "`inventory`.`inventory_id`"},
+	FilmID:      whereHelperint{field: "`inventory`.`film_id`"},
+	StoreID:     whereHelperint8{field: "`inventory`.`store_id`"},
 	LastUpdate:  whereHelpertime_Time{field: "`inventory`.`last_update`"},
 }
 
@@ -1002,7 +1002,7 @@ func Inventories(mods ...qm.QueryMod) inventoryQuery {
 
 // FindInventory retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindInventory(ctx context.Context, exec boil.ContextExecutor, inventoryID uint32, selectCols ...string) (*Inventory, error) {
+func FindInventory(ctx context.Context, exec boil.ContextExecutor, inventoryID int32, selectCols ...string) (*Inventory, error) {
 	inventoryObj := &Inventory{}
 
 	sel := "*"
@@ -1107,7 +1107,7 @@ func (o *Inventory) Insert(ctx context.Context, exec boil.ContextExecutor, colum
 		return ErrSyncFail
 	}
 
-	o.InventoryID = uint32(lastID)
+	o.InventoryID = int32(lastID)
 	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == inventoryMapping["inventory_id"] {
 		goto CacheNoHooks
 	}
@@ -1383,7 +1383,7 @@ func (o *Inventory) Upsert(ctx context.Context, exec boil.ContextExecutor, updat
 		return ErrSyncFail
 	}
 
-	o.InventoryID = uint32(lastID)
+	o.InventoryID = int32(lastID)
 	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == inventoryMapping["inventory_id"] {
 		goto CacheNoHooks
 	}
@@ -1562,7 +1562,7 @@ func (o *InventorySlice) ReloadAll(ctx context.Context, exec boil.ContextExecuto
 }
 
 // InventoryExists checks if the Inventory row exists.
-func InventoryExists(ctx context.Context, exec boil.ContextExecutor, inventoryID uint32) (bool, error) {
+func InventoryExists(ctx context.Context, exec boil.ContextExecutor, inventoryID int32) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from `inventory` where `inventory_id`=? limit 1)"
 

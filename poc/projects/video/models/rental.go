@@ -26,10 +26,10 @@ import (
 type Rental struct {
 	RentalID    int       `boil:"rental_id" json:"rental_id" toml:"rental_id" yaml:"rental_id"`
 	RentalDate  time.Time `boil:"rental_date" json:"rental_date" toml:"rental_date" yaml:"rental_date"`
-	InventoryID uint32    `boil:"inventory_id" json:"inventory_id" toml:"inventory_id" yaml:"inventory_id"`
-	CustomerID  uint16    `boil:"customer_id" json:"customer_id" toml:"customer_id" yaml:"customer_id"`
+	InventoryID int32     `boil:"inventory_id" json:"inventory_id" toml:"inventory_id" yaml:"inventory_id"`
+	CustomerID  int       `boil:"customer_id" json:"customer_id" toml:"customer_id" yaml:"customer_id"`
 	ReturnDate  null.Time `boil:"return_date" json:"return_date,omitempty" toml:"return_date" yaml:"return_date,omitempty"`
-	StaffID     uint8     `boil:"staff_id" json:"staff_id" toml:"staff_id" yaml:"staff_id"`
+	StaffID     int8      `boil:"staff_id" json:"staff_id" toml:"staff_id" yaml:"staff_id"`
 	LastUpdate  time.Time `boil:"last_update" json:"last_update" toml:"last_update" yaml:"last_update"`
 
 	R *rentalR `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -74,44 +74,21 @@ var RentalTableColumns = struct {
 
 // Generated where
 
-type whereHelperint struct{ field string }
-
-func (w whereHelperint) EQ(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
-func (w whereHelperint) NEQ(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
-func (w whereHelperint) LT(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
-func (w whereHelperint) LTE(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
-func (w whereHelperint) GT(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
-func (w whereHelperint) GTE(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
-func (w whereHelperint) IN(slice []int) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
-}
-func (w whereHelperint) NIN(slice []int) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
-}
-
 var RentalWhere = struct {
 	RentalID    whereHelperint
 	RentalDate  whereHelpertime_Time
-	InventoryID whereHelperuint32
-	CustomerID  whereHelperuint16
+	InventoryID whereHelperint32
+	CustomerID  whereHelperint
 	ReturnDate  whereHelpernull_Time
-	StaffID     whereHelperuint8
+	StaffID     whereHelperint8
 	LastUpdate  whereHelpertime_Time
 }{
 	RentalID:    whereHelperint{field: "`rental`.`rental_id`"},
 	RentalDate:  whereHelpertime_Time{field: "`rental`.`rental_date`"},
-	InventoryID: whereHelperuint32{field: "`rental`.`inventory_id`"},
-	CustomerID:  whereHelperuint16{field: "`rental`.`customer_id`"},
+	InventoryID: whereHelperint32{field: "`rental`.`inventory_id`"},
+	CustomerID:  whereHelperint{field: "`rental`.`customer_id`"},
 	ReturnDate:  whereHelpernull_Time{field: "`rental`.`return_date`"},
-	StaffID:     whereHelperuint8{field: "`rental`.`staff_id`"},
+	StaffID:     whereHelperint8{field: "`rental`.`staff_id`"},
 	LastUpdate:  whereHelpertime_Time{field: "`rental`.`last_update`"},
 }
 

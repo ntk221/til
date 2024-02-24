@@ -23,7 +23,7 @@ import (
 
 // Language is an object representing the database table.
 type Language struct {
-	LanguageID uint8     `boil:"language_id" json:"language_id" toml:"language_id" yaml:"language_id"`
+	LanguageID int8      `boil:"language_id" json:"language_id" toml:"language_id" yaml:"language_id"`
 	Name       string    `boil:"name" json:"name" toml:"name" yaml:"name"`
 	LastUpdate time.Time `boil:"last_update" json:"last_update" toml:"last_update" yaml:"last_update"`
 
@@ -54,11 +54,11 @@ var LanguageTableColumns = struct {
 // Generated where
 
 var LanguageWhere = struct {
-	LanguageID whereHelperuint8
+	LanguageID whereHelperint8
 	Name       whereHelperstring
 	LastUpdate whereHelpertime_Time
 }{
-	LanguageID: whereHelperuint8{field: "`language`.`language_id`"},
+	LanguageID: whereHelperint8{field: "`language`.`language_id`"},
 	Name:       whereHelperstring{field: "`language`.`name`"},
 	LastUpdate: whereHelpertime_Time{field: "`language`.`last_update`"},
 }
@@ -860,7 +860,7 @@ func Languages(mods ...qm.QueryMod) languageQuery {
 
 // FindLanguage retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindLanguage(ctx context.Context, exec boil.ContextExecutor, languageID uint8, selectCols ...string) (*Language, error) {
+func FindLanguage(ctx context.Context, exec boil.ContextExecutor, languageID int8, selectCols ...string) (*Language, error) {
 	languageObj := &Language{}
 
 	sel := "*"
@@ -965,7 +965,7 @@ func (o *Language) Insert(ctx context.Context, exec boil.ContextExecutor, column
 		return ErrSyncFail
 	}
 
-	o.LanguageID = uint8(lastID)
+	o.LanguageID = int8(lastID)
 	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == languageMapping["language_id"] {
 		goto CacheNoHooks
 	}
@@ -1241,7 +1241,7 @@ func (o *Language) Upsert(ctx context.Context, exec boil.ContextExecutor, update
 		return ErrSyncFail
 	}
 
-	o.LanguageID = uint8(lastID)
+	o.LanguageID = int8(lastID)
 	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == languageMapping["language_id"] {
 		goto CacheNoHooks
 	}
@@ -1420,7 +1420,7 @@ func (o *LanguageSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor
 }
 
 // LanguageExists checks if the Language row exists.
-func LanguageExists(ctx context.Context, exec boil.ContextExecutor, languageID uint8) (bool, error) {
+func LanguageExists(ctx context.Context, exec boil.ContextExecutor, languageID int8) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from `language` where `language_id`=? limit 1)"
 

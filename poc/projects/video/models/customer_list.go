@@ -24,7 +24,7 @@ import (
 
 // CustomerList is an object representing the database table.
 type CustomerList struct {
-	ID      uint16      `boil:"ID" json:"ID" toml:"ID" yaml:"ID"`
+	ID      int         `boil:"ID" json:"ID" toml:"ID" yaml:"ID"`
 	Name    null.String `boil:"name" json:"name,omitempty" toml:"name" yaml:"name,omitempty"`
 	Address string      `boil:"address" json:"address" toml:"address" yaml:"address"`
 	ZipCode null.String `boil:"zip code" json:"zip code,omitempty" toml:"zip code" yaml:"zip code,omitempty"`
@@ -32,7 +32,7 @@ type CustomerList struct {
 	City    string      `boil:"city" json:"city" toml:"city" yaml:"city"`
 	Country string      `boil:"country" json:"country" toml:"country" yaml:"country"`
 	Notes   string      `boil:"notes" json:"notes" toml:"notes" yaml:"notes"`
-	SID     uint8       `boil:"SID" json:"SID" toml:"SID" yaml:"SID"`
+	SID     int8        `boil:"SID" json:"SID" toml:"SID" yaml:"SID"`
 }
 
 var CustomerListColumns = struct {
@@ -82,7 +82,7 @@ var CustomerListTableColumns = struct {
 // Generated where
 
 var CustomerListWhere = struct {
-	ID      whereHelperuint16
+	ID      whereHelperint
 	Name    whereHelpernull_String
 	Address whereHelperstring
 	ZipCode whereHelpernull_String
@@ -90,9 +90,9 @@ var CustomerListWhere = struct {
 	City    whereHelperstring
 	Country whereHelperstring
 	Notes   whereHelperstring
-	SID     whereHelperuint8
+	SID     whereHelperint8
 }{
-	ID:      whereHelperuint16{field: "`customer_list`.`ID`"},
+	ID:      whereHelperint{field: "`customer_list`.`ID`"},
 	Name:    whereHelpernull_String{field: "`customer_list`.`name`"},
 	Address: whereHelperstring{field: "`customer_list`.`address`"},
 	ZipCode: whereHelpernull_String{field: "`customer_list`.`zip code`"},
@@ -100,7 +100,7 @@ var CustomerListWhere = struct {
 	City:    whereHelperstring{field: "`customer_list`.`city`"},
 	Country: whereHelperstring{field: "`customer_list`.`country`"},
 	Notes:   whereHelperstring{field: "`customer_list`.`notes`"},
-	SID:     whereHelperuint8{field: "`customer_list`.`SID`"},
+	SID:     whereHelperint8{field: "`customer_list`.`SID`"},
 }
 
 var (

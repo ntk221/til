@@ -23,8 +23,8 @@ import (
 
 // FilmCategory is an object representing the database table.
 type FilmCategory struct {
-	FilmID     uint16    `boil:"film_id" json:"film_id" toml:"film_id" yaml:"film_id"`
-	CategoryID uint8     `boil:"category_id" json:"category_id" toml:"category_id" yaml:"category_id"`
+	FilmID     int       `boil:"film_id" json:"film_id" toml:"film_id" yaml:"film_id"`
+	CategoryID int8      `boil:"category_id" json:"category_id" toml:"category_id" yaml:"category_id"`
 	LastUpdate time.Time `boil:"last_update" json:"last_update" toml:"last_update" yaml:"last_update"`
 
 	R *filmCategoryR `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -54,12 +54,12 @@ var FilmCategoryTableColumns = struct {
 // Generated where
 
 var FilmCategoryWhere = struct {
-	FilmID     whereHelperuint16
-	CategoryID whereHelperuint8
+	FilmID     whereHelperint
+	CategoryID whereHelperint8
 	LastUpdate whereHelpertime_Time
 }{
-	FilmID:     whereHelperuint16{field: "`film_category`.`film_id`"},
-	CategoryID: whereHelperuint8{field: "`film_category`.`category_id`"},
+	FilmID:     whereHelperint{field: "`film_category`.`film_id`"},
+	CategoryID: whereHelperint8{field: "`film_category`.`category_id`"},
 	LastUpdate: whereHelpertime_Time{field: "`film_category`.`last_update`"},
 }
 
@@ -782,7 +782,7 @@ func FilmCategories(mods ...qm.QueryMod) filmCategoryQuery {
 
 // FindFilmCategory retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindFilmCategory(ctx context.Context, exec boil.ContextExecutor, filmID uint16, categoryID uint8, selectCols ...string) (*FilmCategory, error) {
+func FindFilmCategory(ctx context.Context, exec boil.ContextExecutor, filmID int, categoryID int8, selectCols ...string) (*FilmCategory, error) {
 	filmCategoryObj := &FilmCategory{}
 
 	sel := "*"
@@ -1319,7 +1319,7 @@ func (o *FilmCategorySlice) ReloadAll(ctx context.Context, exec boil.ContextExec
 }
 
 // FilmCategoryExists checks if the FilmCategory row exists.
-func FilmCategoryExists(ctx context.Context, exec boil.ContextExecutor, filmID uint16, categoryID uint8) (bool, error) {
+func FilmCategoryExists(ctx context.Context, exec boil.ContextExecutor, filmID int, categoryID int8) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from `film_category` where `film_id`=? AND `category_id`=? limit 1)"
 

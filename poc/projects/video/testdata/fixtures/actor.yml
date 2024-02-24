@@ -1,0 +1,9 @@
+- actor_id: 1
+  first_name: "Leonardo"
+  last_name: "DiCaprio"
+- actor_id: 2
+  first_name: "Brad"
+  last_name: "Pitt"
+- actor_id: 3
+  first_name: "Meryl"
+  last_name: "Streep"

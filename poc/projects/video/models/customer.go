@@ -24,12 +24,12 @@ import (
 
 // Customer is an object representing the database table.
 type Customer struct {
-	CustomerID uint16      `boil:"customer_id" json:"customer_id" toml:"customer_id" yaml:"customer_id"`
-	StoreID    uint8       `boil:"store_id" json:"store_id" toml:"store_id" yaml:"store_id"`
+	CustomerID int         `boil:"customer_id" json:"customer_id" toml:"customer_id" yaml:"customer_id"`
+	StoreID    int8        `boil:"store_id" json:"store_id" toml:"store_id" yaml:"store_id"`
 	FirstName  string      `boil:"first_name" json:"first_name" toml:"first_name" yaml:"first_name"`
 	LastName   string      `boil:"last_name" json:"last_name" toml:"last_name" yaml:"last_name"`
 	Email      null.String `boil:"email" json:"email,omitempty" toml:"email" yaml:"email,omitempty"`
-	AddressID  uint16      `boil:"address_id" json:"address_id" toml:"address_id" yaml:"address_id"`
+	AddressID  int         `boil:"address_id" json:"address_id" toml:"address_id" yaml:"address_id"`
 	Active     int8        `boil:"active" json:"active" toml:"active" yaml:"active"`
 	CreateDate time.Time   `boil:"create_date" json:"create_date" toml:"create_date" yaml:"create_date"`
 	LastUpdate null.Time   `boil:"last_update" json:"last_update,omitempty" toml:"last_update" yaml:"last_update,omitempty"`
@@ -84,29 +84,6 @@ var CustomerTableColumns = struct {
 
 // Generated where
 
-type whereHelperint8 struct{ field string }
-
-func (w whereHelperint8) EQ(x int8) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
-func (w whereHelperint8) NEQ(x int8) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
-func (w whereHelperint8) LT(x int8) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
-func (w whereHelperint8) LTE(x int8) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
-func (w whereHelperint8) GT(x int8) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
-func (w whereHelperint8) GTE(x int8) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
-func (w whereHelperint8) IN(slice []int8) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
-}
-func (w whereHelperint8) NIN(slice []int8) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
-}
-
 type whereHelpernull_Time struct{ field string }
 
 func (w whereHelpernull_Time) EQ(x null.Time) qm.QueryMod {
@@ -132,22 +109,22 @@ func (w whereHelpernull_Time) IsNull() qm.QueryMod    { return qmhelper.WhereIsN
 func (w whereHelpernull_Time) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
 
 var CustomerWhere = struct {
-	CustomerID whereHelperuint16
-	StoreID    whereHelperuint8
+	CustomerID whereHelperint
+	StoreID    whereHelperint8
 	FirstName  whereHelperstring
 	LastName   whereHelperstring
 	Email      whereHelpernull_String
-	AddressID  whereHelperuint16
+	AddressID  whereHelperint
 	Active     whereHelperint8
 	CreateDate whereHelpertime_Time
 	LastUpdate whereHelpernull_Time
 }{
-	CustomerID: whereHelperuint16{field: "`customer`.`customer_id`"},
-	StoreID:    whereHelperuint8{field: "`customer`.`store_id`"},
+	CustomerID: whereHelperint{field: "`customer`.`customer_id`"},
+	StoreID:    whereHelperint8{field: "`customer`.`store_id`"},
 	FirstName:  whereHelperstring{field: "`customer`.`first_name`"},
 	LastName:   whereHelperstring{field: "`customer`.`last_name`"},
 	Email:      whereHelpernull_String{field: "`customer`.`email`"},
-	AddressID:  whereHelperuint16{field: "`customer`.`address_id`"},
+	AddressID:  whereHelperint{field: "`customer`.`address_id`"},
 	Active:     whereHelperint8{field: "`customer`.`active`"},
 	CreateDate: whereHelpertime_Time{field: "`customer`.`create_date`"},
 	LastUpdate: whereHelpernull_Time{field: "`customer`.`last_update`"},
@@ -1252,7 +1229,7 @@ func Customers(mods ...qm.QueryMod) customerQuery {
 
 // FindCustomer retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindCustomer(ctx context.Context, exec boil.ContextExecutor, customerID uint16, selectCols ...string) (*Customer, error) {
+func FindCustomer(ctx context.Context, exec boil.ContextExecutor, customerID int, selectCols ...string) (*Customer, error) {
 	customerObj := &Customer{}
 
 	sel := "*"
@@ -1357,7 +1334,7 @@ func (o *Customer) Insert(ctx context.Context, exec boil.ContextExecutor, column
 		return ErrSyncFail
 	}
 
-	o.CustomerID = uint16(lastID)
+	o.CustomerID = int(lastID)
 	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == customerMapping["customer_id"] {
 		goto CacheNoHooks
 	}
@@ -1633,7 +1610,7 @@ func (o *Customer) Upsert(ctx context.Context, exec boil.ContextExecutor, update
 		return ErrSyncFail
 	}
 
-	o.CustomerID = uint16(lastID)
+	o.CustomerID = int(lastID)
 	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == customerMapping["customer_id"] {
 		goto CacheNoHooks
 	}
@@ -1812,7 +1789,7 @@ func (o *CustomerSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor
 }
 
 // CustomerExists checks if the Customer row exists.
-func CustomerExists(ctx context.Context, exec boil.ContextExecutor, customerID uint16) (bool, error) {
+func CustomerExists(ctx context.Context, exec boil.ContextExecutor, customerID int) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from `customer` where `customer_id`=? limit 1)"
 

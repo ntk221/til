@@ -23,7 +23,7 @@ import (
 
 // Category is an object representing the database table.
 type Category struct {
-	CategoryID uint8     `boil:"category_id" json:"category_id" toml:"category_id" yaml:"category_id"`
+	CategoryID int8      `boil:"category_id" json:"category_id" toml:"category_id" yaml:"category_id"`
 	Name       string    `boil:"name" json:"name" toml:"name" yaml:"name"`
 	LastUpdate time.Time `boil:"last_update" json:"last_update" toml:"last_update" yaml:"last_update"`
 
@@ -53,22 +53,22 @@ var CategoryTableColumns = struct {
 
 // Generated where
 
-type whereHelperuint8 struct{ field string }
+type whereHelperint8 struct{ field string }
 
-func (w whereHelperuint8) EQ(x uint8) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
-func (w whereHelperuint8) NEQ(x uint8) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
-func (w whereHelperuint8) LT(x uint8) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
-func (w whereHelperuint8) LTE(x uint8) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
-func (w whereHelperuint8) GT(x uint8) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
-func (w whereHelperuint8) GTE(x uint8) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
-func (w whereHelperuint8) IN(slice []uint8) qm.QueryMod {
+func (w whereHelperint8) EQ(x int8) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
+func (w whereHelperint8) NEQ(x int8) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
+func (w whereHelperint8) LT(x int8) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
+func (w whereHelperint8) LTE(x int8) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
+func (w whereHelperint8) GT(x int8) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
+func (w whereHelperint8) GTE(x int8) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
+func (w whereHelperint8) IN(slice []int8) qm.QueryMod {
 	values := make([]interface{}, 0, len(slice))
 	for _, value := range slice {
 		values = append(values, value)
 	}
 	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
 }
-func (w whereHelperuint8) NIN(slice []uint8) qm.QueryMod {
+func (w whereHelperint8) NIN(slice []int8) qm.QueryMod {
 	values := make([]interface{}, 0, len(slice))
 	for _, value := range slice {
 		values = append(values, value)
@@ -77,11 +77,11 @@ func (w whereHelperuint8) NIN(slice []uint8) qm.QueryMod {
 }
 
 var CategoryWhere = struct {
-	CategoryID whereHelperuint8
+	CategoryID whereHelperint8
 	Name       whereHelperstring
 	LastUpdate whereHelpertime_Time
 }{
-	CategoryID: whereHelperuint8{field: "`category`.`category_id`"},
+	CategoryID: whereHelperint8{field: "`category`.`category_id`"},
 	Name:       whereHelperstring{field: "`category`.`name`"},
 	LastUpdate: whereHelpertime_Time{field: "`category`.`last_update`"},
 }
@@ -619,7 +619,7 @@ func Categories(mods ...qm.QueryMod) categoryQuery {
 
 // FindCategory retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindCategory(ctx context.Context, exec boil.ContextExecutor, categoryID uint8, selectCols ...string) (*Category, error) {
+func FindCategory(ctx context.Context, exec boil.ContextExecutor, categoryID int8, selectCols ...string) (*Category, error) {
 	categoryObj := &Category{}
 
 	sel := "*"
@@ -724,7 +724,7 @@ func (o *Category) Insert(ctx context.Context, exec boil.ContextExecutor, column
 		return ErrSyncFail
 	}
 
-	o.CategoryID = uint8(lastID)
+	o.CategoryID = int8(lastID)
 	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == categoryMapping["category_id"] {
 		goto CacheNoHooks
 	}
@@ -1000,7 +1000,7 @@ func (o *Category) Upsert(ctx context.Context, exec boil.ContextExecutor, update
 		return ErrSyncFail
 	}
 
-	o.CategoryID = uint8(lastID)
+	o.CategoryID = int8(lastID)
 	if lastID != 0 && len(cache.retMapping) == 1 && cache.retMapping[0] == categoryMapping["category_id"] {
 		goto CacheNoHooks
 	}
@@ -1179,7 +1179,7 @@ func (o *CategorySlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor
 }
 
 // CategoryExists checks if the Category row exists.
-func CategoryExists(ctx context.Context, exec boil.ContextExecutor, categoryID uint8) (bool, error) {
+func CategoryExists(ctx context.Context, exec boil.ContextExecutor, categoryID int8) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from `category` where `category_id`=? limit 1)"
 

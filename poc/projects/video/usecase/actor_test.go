@@ -21,6 +21,10 @@ import (
 
 func TestActorUsecase_GetActorInfo(t *testing.T) {
 	prepare()
+	db, err := sql.Open("txdb", "sakila")
+	if err != nil {
+		panic(err)
+	}
 
 	a := &models.Actor{
 		ActorID: 1,
@@ -35,7 +39,6 @@ func TestActorUsecase_GetActorInfo(t *testing.T) {
 }
 
 var (
-	db       *sql.DB
 	fixtures *testfixtures.Loader
 )
 
@@ -58,18 +61,16 @@ func TestMain(m *testing.M) {
 
 	txdb.Register("txdb", "mysql", c.FormatDSN())
 
-	db, err = sql.Open("txdb", "sakila")
+	db, err := sql.Open("mysql", c.FormatDSN())
 	if err != nil {
 		panic(err)
 	}
+	defer db.Close()
 
-	// 現在の作業ディレクトリの絶対パスを取得
 	currentDir, err := os.Getwd()
 	if err != nil {
 		panic(err)
 	}
-
-	// testdata/fixtures への正確なパスを構築
 	fixturesPath := filepath.Join(currentDir, "..", "testdata", "fixtures")
 
 	fixtures, err = testfixtures.New(
@@ -83,13 +84,11 @@ func TestMain(m *testing.M) {
 	}
 
 	code := m.Run()
-
-	cleanup()
-
+	cleanup(db)
 	os.Exit(code)
 }
 
-func cleanup() {
+func cleanup(db *sql.DB) {
 	tables := []string{"film_actor", "actor", "film", "language"}
 
 	for _, table := range tables {

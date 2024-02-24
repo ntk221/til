@@ -38,14 +38,21 @@ func NewActorUsecase(a *models.Actor, db *sql.DB) (*ActorUsecase, error) {
 }
 
 func (a *ActorUsecase) GetAllFilmsForActor(ctx context.Context) ([]*models.Film, error) {
+	tx, err := a.db.BeginTx(ctx, nil)
+	if err != nil {
+		return nil, err
+	}
 	// Actorに紐づくFilmActorsを読み込み、その中のFilmも読み込む
 	films, err := models.Films(
 		qm.Load(models.FilmRels.FilmActors, models.FilmActorWhere.ActorID.EQ(a.ActorID)),
 		qm.Load(models.ActorRels.FilmActors+"."+models.FilmActorRels.Film),
-	).All(ctx, a.db)
+	).All(ctx, tx)
 	if err != nil {
 		return nil, err
 	}
 
+	if err := tx.Commit(); err != nil {
+		return nil, err
+	}
 	return films, nil
 }

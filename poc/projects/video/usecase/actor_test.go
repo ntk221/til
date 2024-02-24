@@ -20,7 +20,8 @@ import (
 )
 
 func TestActorUsecase_GetActorInfo(t *testing.T) {
-	prepare()
+	t.Parallel()
+
 	db, err := sql.Open("txdb", "sakila")
 	if err != nil {
 		panic(err)
@@ -37,10 +38,6 @@ func TestActorUsecase_GetActorInfo(t *testing.T) {
 	require.NoError(t, err)
 	require.True(t, len(films) > 0)
 }
-
-var (
-	fixtures *testfixtures.Loader
-)
 
 func TestMain(m *testing.M) {
 	jst, err := time.LoadLocation("Asia/Tokyo")
@@ -73,13 +70,18 @@ func TestMain(m *testing.M) {
 	}
 	fixturesPath := filepath.Join(currentDir, "..", "testdata", "fixtures")
 
-	fixtures, err = testfixtures.New(
+	fixtures, err := testfixtures.New(
 		testfixtures.Database(db),
 		testfixtures.Dialect("mysql"),
 		testfixtures.Directory(fixturesPath),
 		testfixtures.DangerousSkipTestDatabaseCheck(),
 	)
 	if err != nil {
+		panic(err)
+	}
+
+	// テスト関数毎にtxdbでトランザクションを貼るので、Loadは一回でいいはず
+	if err := fixtures.Load(); err != nil {
 		panic(err)
 	}
 
@@ -95,11 +97,5 @@ func cleanup(db *sql.DB) {
 		if _, err := db.Exec(fmt.Sprintf("DELETE FROM %s", table)); err != nil {
 			log.Fatalf("Failed to cleanup table %s: %v", table, err)
 		}
-	}
-}
-
-func prepare() {
-	if err := fixtures.Load(); err != nil {
-		panic(err)
 	}
 }

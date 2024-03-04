@@ -31,10 +31,10 @@ func TestActorUsecase_GetActorInfo(t *testing.T) {
 		ActorID: 1,
 	}
 
-	actorUsecase, err := usecase.NewActorUsecase(a, db)
+	actorUsecase, err := usecase.NewActorUsecase(db)
 	require.NoError(t, err)
 
-	films, err := actorUsecase.GetAllFilmsForActor(context.Background())
+	films, err := actorUsecase.GetAllFilmsForActor(context.Background(), a.ActorID)
 	require.NoError(t, err)
 	require.True(t, len(films) > 0)
 }
